@@ -119,7 +119,7 @@ BEGIN
           SET timenow=TIME(NOW());
        
             
-              
+       #To check the number of food items in the parameter of the stored procedure.        
             set temp = (length(_food)-length(replace(_food,',',''))) + 1;
        
   
