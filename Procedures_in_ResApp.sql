@@ -4,7 +4,7 @@
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_ADMIN_CHECK_FOOD`()
+ CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_ADMIN_CHECK_FOOD`()
 BEGIN
             SELECT food_type.`foodCategory`,food_name_type.`foodName`,SUM(food_name_type.`quantity`) FROM food_type 
             JOIN food_name_type ON food_name_type.`foodCategoryid`=food_type.`id`  GROUP BY food_name_type.`foodName` order by food_name_type.`foodCategoryid` ; 
@@ -14,11 +14,11 @@ DELIMITER ;
 
 /* Procedure structure for procedure `PR_CANCEL_ORDER` */
 
-/*!50003 DROP PROCEDURE IF EXISTS  `PR_CANCEL_ORDER` */;
+ DROP PROCEDURE IF EXISTS  `PR_CANCEL_ORDER` */;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_CANCEL_ORDER`(IN orderidparameter INT,IN foodnamepara mediumtext)
+ CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_CANCEL_ORDER`(IN orderidparameter INT,IN foodnamepara mediumtext)
 BEGIN
 #Declaring the variables required for id of food and setting the id respectively.
        DECLARE _next TEXT DEFAULT NULL ;
@@ -69,11 +69,11 @@ DELIMITER ;
 
 /* Procedure structure for procedure `PR_CHECK_SERVICE` */
 
-/*!50003 DROP PROCEDURE IF EXISTS  `PR_CHECK_SERVICE` */;
+ DROP PROCEDURE IF EXISTS  `PR_CHECK_SERVICE` */;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_CHECK_SERVICE`(out errMsg varchar(50))
+ CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_CHECK_SERVICE`(out errMsg varchar(50))
 BEGIN
          
     if (curtime() between (select time(toTime) from `food_type` where food_type.`id`=1) and (select time(fromTime) from food_type where food_type.`id`=2)) then
@@ -97,11 +97,11 @@ DELIMITER ;
 
 /* Procedure structure for procedure `PR_ORDERFOOD` */
 
-/*!50003 DROP PROCEDURE IF EXISTS  `PR_ORDERFOOD` */;
+ DROP PROCEDURE IF EXISTS  `PR_ORDERFOOD` */;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_ORDERFOOD`(IN _food MEDIUMTEXT,IN _quan MEDIUMTEXT,IN orderidpara INT,IN seatnopara INT,out errMsg varchar(100))
+ CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_ORDERFOOD`(IN _food MEDIUMTEXT,IN _quan MEDIUMTEXT,IN orderidpara INT,IN seatnopara INT,out errMsg varchar(100))
 nameproc:
 BEGIN
     
@@ -214,18 +214,14 @@ DELIMITER ;
 
 /* Procedure structure for procedure `PR_PAY_BILL` */
 
-/*!50003 DROP PROCEDURE IF EXISTS  `PR_PAY_BILL` */;
+ DROP PROCEDURE IF EXISTS  `PR_PAY_BILL` */;
 
 DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_PAY_BILL`(in ordernopara int,out errorMsg varchar(50))
+ CREATE DEFINER=`root`@`localhost` PROCEDURE `PR_PAY_BILL`(in ordernopara int,out errorMsg varchar(50))
 BEGIN
     
-if (((select `bill_order`.`billstatus` from bill_order where bill_order.`orderNo`=ordernopara)='Pending') and ((select `bill_order`.`statusorder` from `bill_order` where bill_order.`orderNo`=ordernopara)='Delivered')) then   
-            update bill_order set bill_order.`billstatus` ="PAID" where `bill_order`.`orderNo`=ordernopara;
-            else
-            set errorMsg= "Cant pay for a bill thats cancelled";
-            end if;
+ UPDATE `bill_order` SET `bill_order`.`billstatus`="PAID" WHERE `bill_order`.`orderNo`=ordernopara AND `bill_order`.`billstatus`='Pending';
+            SELECT CONCAT("You total bill is" ,(SELECT SUM(`bill_order`.`totalprice`) FROM `bill_order` WHERE `bill_order`.`orderNo`=ordernopara AND `bill_order`.`billstatus`="PAID" GROUP BY `bill_order`.`orderNo`));
     END */$$
 DELIMITER ;
 
