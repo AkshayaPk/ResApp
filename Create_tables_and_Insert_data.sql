@@ -5,7 +5,6 @@ CREATE TABLE `bill_order` (
   `orderNo` int(11) NOT NULL,
   `totalprice` int(11) NOT NULL,
   `foodId` bigint(20) NOT NULL,
-  `statusorder` varchar(100) NOT NULL,
   `billstatus` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_foodid` (`foodId`),
@@ -14,7 +13,7 @@ CREATE TABLE `bill_order` (
 
 /*Data for the table `bill_order` */
 
-insert  into `bill_order`(`id`,`orderNo`,`totalprice`,`foodId`,`statusorder`,`billstatus`) values (21,1,12,9,'Cancelled','Cancelled Order'),(22,2,12,9,'Delivered','PAID');
+insert  into `bill_order`(`id`,`orderNo`,`totalprice`,`foodId`,`billstatus`) values (21,1,12,9,'Cancelled Order'),(22,2,12,9,'PAID');
 
 /*Table structure for table `food_name_type` */
 
