@@ -43,7 +43,7 @@ BEGIN
 #updating the status in transaction table to "Cancelled" and updating the stock for the respective foodName.			
 			UPDATE trans_restaurant SET trans_restaurant.`status`= "Cancelled" WHERE trans_restaurant.`orderNo`=orderidparameter AND `trans_restaurant`.`foodId` = foodidvalue;
 			UPDATE food_name_type SET food_name_type.`quantity` = food_name_type.`quantity` + (SELECT trans_restaurant.`quantityFood` FROM trans_restaurant WHERE trans_restaurant.`orderNo`=orderidparameter AND trans_restaurant.`foodId`= foodidvalue) WHERE food_name_type.`id`=foodidvalue ;
-			update bill_order set bill_order.`statusorder`="Cancelled" where bill_order.`orderNo`=orderidparameter and `bill_order`.`foodId`=foodidvalue;
+			
 			UPDATE bill_order SET bill_order.`billstatus`="Cancelled Order" WHERE bill_order.`orderNo`=orderidparameter AND `bill_order`.`foodId`=foodidvalue;
 #Printing that the order is already cancelled.			
                        ELSE
@@ -161,7 +161,7 @@ BEGIN
                   UPDATE food_name_type SET food_name_type.`quantity`=food_name_type.`quantity`- _q WHERE food_name_type.`id`=foodidvalueoffood;
                   
                   INSERT INTO trans_restaurant(orderNo,seatNo,foodId,quantityFood,trans_restaurant.`status`,timeoforder) VALUES(orderidpara,seatnopara,foodidvalueoffood,CAST(_q AS UNSIGNED),"Ordered",NOW());
-                  INSERT INTO bill_order(orderNo,bill_order.`totalprice`,bill_order.`foodId`,bill_order.`statusorder`,bill_order.`billstatus`) VALUES (orderidpara,totalprice,foodidvalueoffood,'Delivered','Pending');
+                  INSERT INTO bill_order(orderNo,bill_order.`totalprice`,bill_order.`foodId`,bill_order.`billstatus`) VALUES (orderidpara,totalprice,foodidvalueoffood,'Pending');
                
                   UPDATE restaurant_seats SET restaurant_seats.`status`="Not Occupied" WHERE restaurant_seats.`seatNo`=seatnopara;
                   
